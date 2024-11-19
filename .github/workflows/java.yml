@@ -39,6 +39,9 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: lowercase repo
+        run: |
+          echo "REPO=${GITHUB_REPOSITORY@L}" >> "${GITHUB_ENV}"
       - uses: docker/build-push-action@v4
         with:
           context: ./java
@@ -46,4 +49,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner.toLower() }}/yolks:java_${{ matrix.tag }}
+            ghcr.io/${{ env.REPO }}:java_${{ matrix.tag }}
